@@ -1,1 +1,12 @@
 
+Packet analysis uses network card to read all traffic not just traffic addressed to yourself.
+Commercial vs OS packet sniffers vary in terms of non-traditional or newer protocols being recognized. Commercial tend to have better reporting while OS features can be built upon and shared with community. [Wireshark, Omnidumo] GUI while tcpdump more advanced yet CLI
+
+OSI 7 Layer Model:
+Physical   
+Data
+Network     <---Where Packets reside and 
+Transport
+Session
+Presentation
+Application
