@@ -3,22 +3,46 @@ Depending on the size of the network you are analyzing this could be more diffic
 The hardware variety needs to be taken into account as well since different devices handle traffic in unique ways.
 
 
-Sniffing Hubs
+.Sniffing Hubs
 
 Hubs are an ideal set up but rare in the field due to the headaches it causes network administrators.
 When multiple sources are communicating at the same time packet collisions will occur causing packets to be dropped. This loss causes potential network congestion 
 depending on the protocol used (TCP/IP) as retransmitting could occur. As traffic increases and collisions increase network performance begins to suffer. Hence the
 preference for switches over hubs. Most likely only find hubs on networks supporting legacy systems.
 
-Sniffing Switches
+.Sniffing Switches
 
 The most common device used in modern networks unfortunately the complexity makes packet sniffing a bit more difficult but not impossible.
 Connecting to a switch, the sniffer can only listen to broadcasted messages and packets transmitted and received from the connected device.
 
-To capture additional data their are four primary methods:
+To capture additional data there are four primary methods:
 1.  port mirroring
 2.  hubbing out
 3.  using a tap
 4.  ARP cache poisoning
+
+.Port Mirroring (PM)
+
+Easiest of the four methods, aka port spanning, requires access to the CLI or web management interface of the switch on which the target device is located. The switch
+must also support port mirroring and have an extra port available to connect sniffer to. Port traffic is essentially copy and mirror traffic on the secondary port.
+
+Some manufacturers allow multiple ports to be mirrored to one however if traffic reaches a certain threshold this could cause "oversubscription" causing network degredation and potentially pausing communication entirely. 
+
+Port mirroring seems like an attractive low cost method to analyze certain network segments but is not suitable for uses such as in the case of network security monitoring. At high throughput levels PM can provide inconsistent results and cause data loss which could be hard to trace. For such situations using a tap is recommended.
+
+.Hubbing Out
+
+Plugging an analyzer and switch into a hub is a valid use case when port mirroring isn't viable. In most cases hubbing out reduces duplex from full to half and isn't the cleanest way to capture packets however sometimes it is the only option.
+
+.Using a Tap
+
+Similar to hubbing out, a tap is a specialized device placed between two points of the cable system. The two primary taps are aggregated and non-aggregated types. The main difference between the two is a non-aggregated tap has four ports and requires seperate interfaces for monitoring traffic bidirectionally while the aggregated has three ports and only needs one interface. Another downside to the non-aggregated type is the requirement of two network interface cards for the monitoring. For enterprise solutions a fail-open mechanism should be default in case the tap malfunctions and the network needs to function as intended.
+
+.ARP cache poisoning
+
+The two main packet addressing protocols occur at layers 2 and 3. Layer 2 devices are only aware of MAC addresses while layer 3 usings IP addressing. When the MAC address is unknown it must be obtained via IP addressing so traffic can be forwarded correctly. When one computer wishes to communicate with another the device first checks its ARP cache to see if the MAC address associated with the IP address is known. If no such pair exists the device broadcasts a request to all domain devices via the ff:ff:ff:ff:ff:ff address asking for the MAC:IP pair. The sought after device responds with its address while all others discard/drop the packet.
+
+Poisoning occurs when ARP requests are sent to layer 2 and 3 devices (switches and routers etc) and nefarious devices respond with the fake MAC address in hopes of intercepting traffic of target computer.
+
 
 
