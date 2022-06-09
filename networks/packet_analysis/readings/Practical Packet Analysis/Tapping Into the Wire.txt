@@ -1,0 +1,24 @@
+To effectively analyze packets the physical location of sniffer placement is essential.
+Depending on the size of the network you are analyzing this could be more difficult than the actual analysis. 
+The hardware variety needs to be taken into account as well since different devices handle traffic in unique ways.
+
+
+Sniffing Hubs
+
+Hubs are an ideal set up but rare in the field due to the headaches it causes network administrators.
+When multiple sources are communicating at the same time packet collisions will occur causing packets to be dropped. This loss causes potential network congestion 
+depending on the protocol used (TCP/IP) as retransmitting could occur. As traffic increases and collisions increase network performance begins to suffer. Hence the
+preference for switches over hubs. Most likely only find hubs on networks supporting legacy systems.
+
+Sniffing Switches
+
+The most common device used in modern networks unfortunately the complexity makes packet sniffing a bit more difficult but not impossible.
+Connecting to a switch, the sniffer can only listen to broadcasted messages and packets transmitted and received from the connected device.
+
+To capture additional data their are four primary methods:
+1.  port mirroring
+2.  hubbing out
+3.  using a tap
+4.  ARP cache poisoning
+
+
