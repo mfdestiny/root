@@ -3,10 +3,24 @@ Packet analysis uses network card to read all traffic not just traffic addressed
 Commercial vs OS packet sniffers vary in terms of non-traditional or newer protocols being recognized. Commercial tend to have better reporting while OS features can be built upon and shared with community. [Wireshark, Omnidumo] GUI while tcpdump more advanced yet CLI
 
 OSI 7 Layer Model:
-Physical   
-Data
-Network     <---Where Packets reside and 
-Transport
-Session
-Presentation
-Application
+
+    Name          Format
+1.  Physical      Bits
+2.  Data Link     Frames
+3.  Network       <---where Packets reside
+4.  Transport     Segments
+5.  Session       Data
+6.  Presentation  Data
+7.  Application   Data
+
+1.  Medium used as foundation to faciliate transfer. Wired or Wireless. 
+2.  Transports data across the physical layer. Provides schema to identify devices via MAC addresses etc. 
+    Bridges/switches live in this layer.
+3.  Responsible for routing between physical devices. Layer is responsible for logical addressing through IP addresses and breaking data segments into packets. 
+    Routers live in this layer.
+4.  Provides reliable transportation services through TCP(connection-based), UDP(connectionless) etc. Error detection/correction occur at this level.
+    Firewalls and proxy servers can exist on this level.
+5.  Initates and ends communication between devices gracefully(usually).
+6.  Transforms data into application-readable format. Encoding/decoding and encryption/decryption occur on this plane.
+7.  Surface layer seen and used by layer displayed by UI for a preferably good UX.
+
