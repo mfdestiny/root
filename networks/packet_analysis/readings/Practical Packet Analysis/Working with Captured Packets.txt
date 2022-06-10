@@ -7,3 +7,12 @@
  Type         Identifies what ID name or number refers to     host,net,port
  Dir          Specifies transfer direction to or from Type    src,dst
  Proto        Restricts match to particular protocol          ether, ip, tcp, udp, http, ftp
+ 
+ 
+ |------Primitive-----|   |Primitive|
+ dst host 192.168.0.10 && tcp port 80
+ Q   Q         ID          Q   Q   ID
+ 
+ This primitive alone is an expression which could capture destination traffic of IP 192.168.0.10 on port 80.
+ 
+ 
