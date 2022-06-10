@@ -16,3 +16,9 @@
  This primitive alone is an expression which could capture destination traffic of IP 192.168.0.10 on port 80.
  
  
+ Under normal circumstances a maximum frame on an Ethernet connection is 1518 bytes. When ether, IP, TCP headers are removed 1460 bytes are left for a layer 7 header and/or data.
+ 
+Ethernet header is 14 bytesplus a 4 byte CRC.
+IP header is minimum 20 bytes.
+TCP header is minimum 20 with no data or options included.
+TCP with SYN , ACK, RST, FIN around 54 bytes.
