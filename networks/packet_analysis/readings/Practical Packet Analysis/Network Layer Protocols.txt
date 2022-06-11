@@ -24,3 +24,34 @@ The ARP header includes the following fields:
 -Sender Protocol Address  : Senders upper layer protocol address
 -Target Address Length  : Intended receivers hardware address (all zeroes in ARP reqests)
 -Target Protocol Address : Intended receivers upper-layer protocol address
+
+Gratuitous packets occur when an IP address changes and to avoid conflict with the new owner a broadcast is sent to update all devices who received the packet 
+to update their CAM table. Some OS send them out on start up as well.  Load balancing is another potential reason.
+
+.Internet Protocol
+
+When devices are connected only via switches and hubs they are considered to be a local area network. MAC addresses suffice for intranetwork addresses while another addressing model is needed for interconnected networks via routers. Currently IPv4 and iIP6 are the most used protocols for this purpose however others do exist.
+
+.IPv4
+
+A 32-bit addressing system in quad dotted notation in the form A.B.C.D each letter containing 8 bits for a total of 255.255.255.255 possible addresses.
+An IP address contains two parts a network portion and a host portion. The network portion identifies the portion of the LAN the device is connected to and the host portion identifies the device itself on said network. The determination of which portion is the host and which portion is the network is not always the same. This information is determined by the network mask (netmask) or also known as the subnet mask. The netmask is also 32 bits long with each bit set to 1 to identify the network portion part. Another notation is Classless Inter Domain Routing  (CIDR) with a / after the IP address followed by the bits belonging to the subnet mask. Example being an IP 10.10.0.6 with a 255.255.0.0 mask could be written as 10.10.0.6/16
+
+.IPv4 Packet Structure
+-Version: Version of IP being used (ipv4 is always 4)
+-Header Length: Length of the IP header
+-Type of Service: A precedence flag and type of service flag which are used by routers to prioritize traffic.
+-Total Length: Length of header and data included
+-Identification: Unique number to identify packet or sequence of fragmented packets
+-Flags: Used to identify if packet is part of sequence
+-Fragment Offset: If packet is fragment this helps put packet in correct sequence
+-Time to live: Defines lifetime of packet determined by hops or seconds through routers
+-Protocol: Identifies transport layer header that encapsulates the IPv4 header
+-Header Checksum: error-detecting mechanism used to verify contents of header are not damaged
+-Source IP address: IP address of sender
+-Destination IP address: IP address of receiver
+-Options: Reserved for additional options it includes source options and timestamps
+-Data: The data being transmitted
+
+IP fragmentation is a feature to ensure reliability across networks. Fragmentation size is based on the Layer 2 maximum transmission unit (MTU) of ethernet with
+a default 1500 MTU not including the 14 byte ethernet header.
