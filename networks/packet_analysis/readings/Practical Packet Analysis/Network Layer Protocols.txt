@@ -54,4 +54,36 @@ An IP address contains two parts a network portion and a host portion. The netwo
 -Data: The data being transmitted
 
 IP fragmentation is a feature to ensure reliability across networks. Fragmentation size is based on the Layer 2 maximum transmission unit (MTU) of ethernet with
-a default 1500 MTU not including the 14 byte ethernet header.
+a default 1500 byte MTU not including the 14 byte ethernet header. MTU can be reconfigured and the device will check the MTU vs the size of the data length to determine if fragmentation is necessary.
+
+Fragmenting involves the following steps:
+1.  Device splits data into amount of packets for successful transmission.
+2.  Total length field of each IP header is set to the segment size of each fragment.
+3.  More fragments flag is set to 1 except for the last one.
+4.  Fragment offset field is set in the IP header of the fragments.
+5.  Fragments are transmitted.
+
+Fragment offset = 0 is the first packet of the segmented sequence. Fragment offset of 1480 indicates a 1500 MTU minus the 20 byte IP header. The indentification field of all fragmented pieces will be the same as well.
+
+.IPv6
+
+RFC 2460 was created in 1998 as an upgrade to IPv4 to allow a larger address base to coexist. Addresses are 128 bit verse 32 bit and notated in 8 groups of 2 bytes in hexadecimal in the format 1111:aaaa:2222:bbbb:3333:cccc:4444:dddd
+
+Hard to remember but a shortcut can allow the first set of 0000s in a address to be collapsed transforming 1111:0000:2222:bbbb:3333:cccc:4444:dddd to 1111::2222:bbbb:cccc:4444:dddd. Only one collapse is allowed before address becomes invalid. Leading zeros can also be dropped while in this form as well.
+
+Similar to IPv4, v6 has a network and host portion called the network prefix and interface identifier respectively. Traffic is broken down into 3 categories: broadcast, multicast and anycast. In most cases link local unicast traffic will be the most common commmunication between local network devices.
+
+format example is : fe80:0000:0000:0000:7a31:c1ff:fecb:b256
+                    prefix:padding:padding:padding:interface identifier for last 4 groupings
+                    
+fe80 is the identifier for link local addresses in general first 10 bits being set followed by padding for next 54 bits.
+
+The second half is the interface identifier which uniquely identifies a network interface on an end-point device. On ethernet this is a MAC address, however 48 bits and ipv6 is a 64 bit space so some padding is needed. The address is split in half and 0xfffe is added between each half as padding to create the unique identifier. Last the seventh bit of the first byte is inverted. 
+
+An example being an original MAC address by this ID: 78:31:c1:cb:b2:56
+The new address is the first split 78:31:c1 and cb:b2:56
+The padding 0xfffe is applied resulting in 78:31:c1:ff and fe:cb:b2:56
+The seventh bit is flipped converting the 8 to an a resulting in 7a:31:c1:ff and fe:cb:b2:56
+The ipv4 transformed to ipv6 MAC address is now 7a31:c1ff:fecb:b256
+
+
