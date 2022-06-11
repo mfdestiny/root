@@ -86,4 +86,77 @@ The padding 0xfffe is applied resulting in 78:31:c1:ff and fe:cb:b2:56
 The seventh bit is flipped converting the 8 to an a resulting in 7a:31:c1:ff and fe:cb:b2:56
 The ipv4 transformed to ipv6 MAC address is now 7a31:c1ff:fecb:b256
 
+ipv6 can also be displayed in CIDR notation with the forward slash /.
 
+ipv6 notation changes when used within a global unicast context. The first 3 bits are set to 001 followed by 45 bit global routing prefix. The global prefix is set by the Internet Assigned Numbers Association (IANA) used to identify an organizations IP space. The next 16 bits are the organizations subnet ID similar to the ipv4 netmask.
+
+An example being:
+
+|-network prefix --|
+2001:4860:4860:0000:7a31:cf11:fecb:b256
+|routing prfix|mask|---interface id---|
+
+ipv6 provides more efficiency than ipv4 in terms of routing packets to destination and making use of effective address space due link local and global addressing
+along with unique host identifiers.
+
+.IPv6 Packet Structure
+Headers are fixed 40 bytes compared to variable length ipv4 headers. Additional options can be included via extension headers. The benefit being routers only need to process the 40 byte header to pass along information.
+
+1.  Version: version of ip, v6 will always be 6
+2.  Traffic Class:  prioritizes certain classes of traffic
+3.  Flow Label: used by source to label certain packets belonging to same flow. typically used for quality of service management and ensure packets of same flow take same path
+4.  Payload Length: Length of data payload followed by the IP header
+5.  Next Header:  identifies layer 4 header encapsulating v6 header. replaces the v4 protocol field
+6   Hop Limit:  defines the lifetime of the packet. replaces the TTL field in v4
+7.  Source IP address : IP address of host
+8.  Destination IP address: IP address of receiver
+
+Higher Level protocols such as TCP and HTTP function the same regardless of the underlying IP addressing scheme used. This is the benefit of encapsulation as each layer functions independently.
+
+.Neighbor Soliciation and ARP
+ipv6 does not support broadcasting features ipv4 has. deemed as an inefficient method. ARP using broadcasting so how does ipv6 handle this?
+
+Neighbor Discovery Protocol (NDP) and neighbor solicitation replacement methods for ARP in ipv6. Using ICMPv6, multicasting solicits only devices that are subscribed
+to a data stream to receive and process it. Multicast traffic can be identified easily as it has its own reserve space (ff00::/8). Different protocol yet functions
+similar to a request/response action reaction. Since MAC addresses are a layer 2 addressing scheme they are needed regardless of IP protocol and the requesting device solicits all devices in the domain with an ICMPv6 type 135 packet requesting the MAC address paired with the host IP address similar to the ARP methodology. The response is the same with the device who is being sought to respond with their MAC:IP pair and other devices disregard the initial request using an ICMPv6 type 136 packet.
+
+.IPv6 Fragmentation
+Devices transmitting ipv6 are expected to do a MTU discovery process to determine the maximum size of the packet before actually sending them. In the event the packet is to big the packet will be dropped and the router will send an ICMPv6 type 2 packet (Packet to big) to the sender. The sender will then try a smaller packet and the process will repeat until the largest possible MTU is accepted. A router will never be responsible for fragmenting packets, it is the senders duty. If the upper layer protocol cannot properly size MTU then fragmentation will still be used. A fragmentation header will be generated and the include the information from the ipv4 header.
+
+Transitional Protocols
+IPv6 packets can be encapsulated in IPv4 packets to work on IPv4 networks since transition has been slow. Enscapsulation occurs 3 ways:
+1.  Router to Router: Uses a tunnel for encapsulation from src to dest . Allows entire networks to communicate in ipv6 on ipv4 networks
+2.  Host to Router: Uses encapsulation for src to communicate with router on ipv6 while dest is inside ipv4 network
+3.  Host to Host:  Uses tunnel method between endpoints to communicate directly on ipv4 networks
+
+Several protocols include:
+1. 6to4:  Allows transmission using the three above methodologies.
+2. Toledo:  Uses NAT and ipv6 over ipv4 encapsulation via UDP tranport protocol
+3. ISATAP:  intrasite protocol to allow transmission between hosts on same network
+
+.Internet Control Message Protocol (ICMP)
+
+Utility protocol of TCP/IP to provide information regarding availability of devices, services, or routes for TCP/IP. Defined RFC 792 most troubleshooting involves ICMP type messages.
+
+.ICMP Packet Structure
+Type: classification based on RFC spec
+Code: subclass based on RFC spec
+Checksum: used to ensure data received is correct and intact
+Variable: portion that varies based on Type and Code fields
+
+A popular use of ICMP is its ping feature, not part of the RFC spec yet uses ICMP to achieve its endgoal. Ping and echo are used interchangeably yet are different. Ping is a tool that uses ICMP echo requests. The random data in the ICMP request can potentially be used by an attacker to determine characteristics of the machine
+or use it as a medium to communicate covertly.
+
+.Traceroute
+Traceroute issues a ICMP request to a destination with a TTL of 1 to get a destination unreachable response. The TTL is increased by 1 to record every new router hop until the destination is reached. Windows uses ICMP protocol exclusively while other OS's can map the route using other protocols.
+
+
+
+
+
+
+
+
+
+
+            
