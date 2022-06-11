@@ -1,0 +1,55 @@
+.Transmission Control Protocol (TCP)
+
+TCP is ultimately responsible for end to end reliability. RFC 793 handles data sequencing and error correction. Considered connection oriented because
+it establishes a formal connection before sending data.
+
+.TCP Packet Structure
+Source Port: Port used to transmit data
+Destination Port : Port receiving data
+Sequence Port:  number used to identify TCP segment. used to ensure parts of stream are not missing
+Acknowledgement Port: The sequence number of the next packet from the other device
+Flags:  URG, ACK, PSH, RST, SYN, FIN, flags for identifying the type of TCP packet
+Window Size : size of TCP receiver bufer in bytes
+Checksum : used to ensure contents of packet are right
+Urgent Pointer: if URG is set, this field is examined to determine where the CPU should start reading the data in this packet
+Options : various options can be added in tcp packet
+
+
+65,535 ports available. two groups
+system ports 1-1023 : well-known established services use these ports, SSH HTTP FTP
+other ports 1024-65k
+
+only one service at a time can use a port so system usually chooses at random
+
+.TCP 3 way handshake
+All communication starts with a handshake. It ensures the recipient host is up and running and also listening and ready for the transmission.
+1.SRC sends SYN packet to DEST. This includes a maximum segment size and intial sequence number
+2.DEST responds SYN ACK packet back to SRC with the acknowledgement number filled as the initial sequence number
+3.SRC sends ACK back to DEST
+
+Communication commences.
+
+.TPC Teardown
+A four way method to close TCP connections gracefully
+1.SRC sends a FIN ACK packet
+2.DEST responds ACK packet
+3.DEST sends FIN ACK packet
+4.SRC responds ACK packet
+
+.TCP reset
+A RST packet can be sent to abrupty end connection due to various reasons such as a port unconfigured for communication or an interruption due to a port scan. A RST
+contains nothing more than an RST flag and ACK flag.
+
+.User Datagram Protocol (UDP)
+UDP is another layer 4 protocol however it lacks the reliability TCP offers in favor of speediness of transmission. A connectionless based protocol it is a 
+best effort function with no guarantees of receipt by DEST. There is no formal handshake to initiate connection or closing of connection. Protocols that rely on UDP
+such as DNS and DHCP have built-in reliability services  or use ICMP to make connections a bit more reliable.
+
+.UDP Packet Structure
+1.Source Port:  Port used to transmit data
+2.Destination Port: Port used to receive data
+3.Packet Length:  Length of packet in bytes
+4.Checksum: Uses to ensure UDP header and data arrives intact and error free
+
+
+
