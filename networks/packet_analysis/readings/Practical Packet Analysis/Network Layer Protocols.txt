@@ -1,0 +1,26 @@
+.Address Resolution Protocol
+
+When a device communicates via an application with another device the application should have the ability to build layers 3 through 7 assuming the IP address
+is known via DNS. In order to continue down the stack the application needs the MAC address of the destination device. Switches have lookup tables called
+CAM (Content Addressable Memory) tables which has the mac addresses of all the devices connected to its ports. 
+
+When the switch receives traffic for one its devices it checks the table and forwards the data to the correct port. If the MAC address is unknown the transmitting 
+device will check its cache and if still unknown additional communication is required to resolve the MAC address via the Address Resolution Protocol 
+on ipv4 networks defined by RFC 826. The protocol uses only two packets an ARP request and an ARP response.
+
+The ARP request simple is a broadcast to all devices in the network segment stating "Hi this is my IP1:MAC pair and I have data for IP2 however I do not know
+their MAC address. Whoever has this IP2 address could you please give me your MAC address". Ideally IP2 responds with their MAC address while all other 
+devices drop the packet/discard the request. The requesting device then updates its CAM table and continues the data transfer.
+
+.ARP Packet Structure
+
+The ARP header includes the following fields:
+-Hardware Type : Layer 2 mostly used is Ethernet in this case. Could be fiber in the future.
+-Protocol Type : Higher-level protocol for which the ARP request is being used 
+-Hardware Address Length : The length in (octet/bytes) of the hardware address in use  (6 for ethernet)
+-Protocol Address Length : "                          " of the logical address in use 
+-Operation : Function of the packet; 1 being request and 2 being response
+-Sender Address Length : Hardware address of the sender
+-Sender Protocol Address  : Senders upper layer protocol address
+-Target Address Length  : Intended receivers hardware address (all zeroes in ARP reqests)
+-Target Protocol Address : Intended receivers upper-layer protocol address
