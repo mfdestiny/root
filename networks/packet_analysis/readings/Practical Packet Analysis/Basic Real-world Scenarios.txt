@@ -117,3 +117,23 @@ Scenario:
 Company is expanding and creating a remote branch with a slave DNS server suppose to get all data from master DNS server. The remote branch cannot access the app server on the HQ side of the network. This is a two network system connected by WAN.
 
 Analysis:
+Looking at the capture packet clientside, we only see two DNS packets. We assume DHCP and ARP already occured and the DNS mapping
+is correct. Howevwer we are seeing a Server failure response. First assumption is the HQ side server is configured incorrectly. We know the DNS queries branch side are resolved from the HQ side so perhaps the issue is the DNS HQ server. Looking at the branch side, we notice the last packet is TCP instead of UDP. TCP can be used when queries exceed a certain size and during zone transfers. Since the branch DNS is a slave to the HQ DNS the branch DNS must get its resource records from the HQ DNS. The TCP packet could be the start of a zone transfer but seems to be failing since their is no SYN ACK from the branch DNS. It turns out the branch router was only allowed to accept UDP on port 53 and discard all others hence the lack of TCP SYN ACK response.
+
+Conclusion:
+Thinko f packets as clues. Clues don't allows tell you what the problem is but eventually point in the direction of the culprint with enough evidence.
+
+.Software Data Corruption
+[tickedoffdeveloper.pacpng]
+
+Scenario:
+A developer wrote a program that sends a large file to a database at the end of each work day. The data recieved is corrupted and 
+blames the network. Is the network at fault or bad code?
+
+Analysis:
+Looking at the capture we see the file is being transferred to the database via FTP. Following the FTP-Data stream we are able to save a copy of the file and compare it to the original to verify the file is indeed intact and it is bad code and not the network itself.
+
+Conclusion:
+Packet analysis strips away the complexity of poorly written code because none of that matters at the packet level. Using a basic
+understanding of everyday protocols allows an analyst to prove the network is working as intended regardless of the code it is 
+transferring.
