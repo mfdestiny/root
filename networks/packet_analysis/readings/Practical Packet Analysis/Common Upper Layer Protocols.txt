@@ -1,0 +1,152 @@
+.Dynamic Host Configuration Protocol (DHCP)
+Application layer protocol allowing immediate generation of IP address. Most DHCP servers provide other paramters such as default gateway and DNS servers
+used on the newtork.
+
+.DHCP Packet Structure
+1.OpCode: Determines DHCP request or DHCP response
+2.Hardware Type:  Type of hardware address (10MB ethernet, IEEE 802)
+3.Hardware Length:  Length of hardware address
+4.Hops: used by relay agents to find DHCP server
+5.Transaction ID : random number used to pair DHCP requests and responses
+6.Seconds Elapsed : seconds since client first request DHCP server
+7.Flags : types of traffic DHCP client can accept (broadcast, unicast etc)
+8.Client IP address: client IP 
+9.Your IP: IP address offered by DHCP server
+10.Server IP: DHCP server address
+11.Gateway IP address: address to default network gateway
+12.CLient hardware address: client MAC adress
+13.Server Host Name: Servers host name (optional)
+14.Bootfile: bootfile used for DHCP (optional)
+15.Options: used to expand DHCP packet features 
+
+.Initialization Process
+4 packet process known as DORA. Discover Offer Request Acknowledge
+Discover: Client starts without IP because it is requesting one from server sent to 255.255.255.255 (broadcast address) attempting to find DHCP server. DHCP relies
+on UDP since speed is essential in assigning an IP address.
+Offer: Since client does not have an IP address the DHCP server will atttempt to communicate with device via the MAC address through ARP. If this fails the server
+will broadcast offer to communicate. The server offers an IP address in the Your IP field with the servers IP address in the net Server IP field.
+Request: The client needs to respond with a request packet because technically the initalization process is incomplete and the client does not officially have an IP
+even though it was offered one. The transaction ID is the same as the first two packets showing these are all part of the same process. The server IP and client IP fields
+are now filled.
+Acknowledge: DHCP sends client an ACK packet and records information in its database. The client now has an IP address and can now communicate on the network.
+
+.Inlease Renewal
+When an address is assigned it is leased to the client.When the lease expires the client must perform a truncated DORA process to reclaim its IP address called
+an inlease renewal. The Discovery and Offer packets are not needed since the client has found the server and already been offered an IP address leaving 
+only the request and acknowledge part of the process.
+
+The only option required in a DHCP packet is the Message type option, there are 8 message types:
+1.Discover
+2.Offer
+3.Request
+4.Acknowledge ACK
+5.Decline : Sent by client to server to indicate invalid parameters within packet
+6.Not Acknowledge NAK : Sent by client to the server to refuse request for configuration parameters
+7.Release:  Sent by client to server to cancel lease by releasing configuration paramters
+8.Inform: Sent by client to server to ask for configuration paramters when client already has IP address
+
+.DHCPv6
+
+The above structure does not ahve space for ipv6 addressing so RFC 3315 was created. Much simpler than DHCPv4 since its not built upon BOOTP
+DORA is replaced by SARR
+
+Solicit:  Initial packet sent to special multicast address (ff02::1:2) attempting to locate DHCP servers
+Advertise:  Available server responds directly to client to give addressing and configuration information
+Request:  Client sends formal request to server via multicast
+Reply:  Servers send all requested information directly to client and process is complete
+
+SA and RR both have seperate identical transactions IDs
+
+Ports 546 and 547 are default for DHCPv6 communication
+
+.Domain Name System (DNS)
+One of the most crucial protocols this ties domain names such as https://google.com with an IP address. When we want to connect with a device and we don't know
+its IP address with connect via its domain name. DNS servers store a database of resource records of IP:DNS namemappings which they share with clients and other
+DNS servers.
+
+.Packet Structure
+DNS ID Structure: Associates DNS queries with responses
+Query/Response: Denotes if its a DNS query or response
+OpCode: defines type of query contained in message
+Authortative Answers (AA):  If this value is set in a response packet indicates response is from name server with authority over domain
+Truncation (TC): indicates response with truncated because packet was to large
+Recursion Desired (RD): when value set in query indicates DNS client wants recursive query if the target name server doesn't contain the information requested
+Recursion Available( (RA): if value is set, this name server supports recursive queries
+Reserved (Z): defined by RFC1035 to be set to all zeroes, can be used as extension of the RCode field
+Response Code (RCode): Used in DNS response to indicate presence of any errors
+Question Count: # of entries in Question section
+Answer Count: # of entries in Answer section
+Name Server (Authority) Record Count: # of name server records in the Authority section 
+Additional Records Count: # of other resource records in the Addition Information section 
+Questions Section: variable sized section containing one or more queires for information to be sent to DNS server
+Answers Section: variable sized section carrying one more resource records that answer queries
+Authority Section: variable sized section containing resource records pointing to authoritative name servers to be used in continuing the resolution process
+Additional Information Section: variable sized section containg resource recrods that hold addtional information related to the query that is not absolutely neceessary to answer the query
+
+A simple DNS query is a two packet process; a request to the server and a response to the client.
+
+.DNS Questions
+Some common Type fields used in DNS communications indicate resource record types the packet is for.
+Value Type  Description
+1     A     IPv4 host address
+2     NS    Authoritative name server
+5     CNAME Canonical name for an alias
+15    MX    Mail Exchange
+16    TXT   Text String
+28    AAAA  IPv6 host address
+251   IFXR  Incremental zone transfer
+252   AFXR  Full zone tranfser
+
+All DNS resource record types can be found at :  http://www.iana.org/assignments/dns-parameters/
+
+.DNS Recursion
+When a DNS server needs to find an IP address it queries another DNS server on behalf of the original client. This process
+is known as recursion. Recursion can have multiple levels before an answer is found.
+
+.DNS Zone Transfers
+A DNS zone is a namespace or group of DNS names that a DNS server has been delegated to manage. If the network grows it could add
+a second DNS server to handle another portion such as in the case of a mail server and the new DNS server would be the authority
+for that mail subdomain.
+
+A zone transfer occurs when zone data is transferred between two devices typically out of desire for redundancy. There are two types
+of zone transfers: 
+
+Full zone transfer (AFXR) send an entire zone between devices
+Incremental zone transfer (IXFR) send only a portion of the zone information
+
+Zone transfers rely on TCP for reliability due to the amount of data being transferred.
+
+.HTTP
+
+Most popular traffic wise on the internet. http://www.google.com/ as an example. HTTP begins with a TCP 3way handshake on port 80 (system port for HTTP). Once
+communication is established a GET packet requests Uniform Resource Indicator as / and the HTTP version. the client sends information
+to the webserver such as the browser (User-Agent), language (Accept-languages) and cookie information. The server uses the inforamtion
+to detmine which data to return to the client for accessibility. The server responds to the GET request with a TCP ACK. Since there are
+no HTTP request/response headers these packets will show in Wireshark as TCP packets. The POST method uploads data to the server and
+server responds with ACK.
+
+.Simple Mail Transfer Protocol SMTP
+
+Used by platforms such as Microsoft Exchange and Postfix, SMTP is the standard for sending email. At the user level, the mailbox
+is accessed with a mail user agent (MUA) which is an email client like Outlook or Gmail. When email is sent, it is transferred
+from the MUA to a mail transfer agent (MTA) also known as a mail server. Popular mail server applications are Postfix and Microsoft Excahnge
+If the email is destined outside the network a DNS query is required to find the recipient mail server. Mail Server has several
+components including a Mail Delivery Agent (MDA) and Mail Submission Agent (MSA).
+
+Sending email from client to mail server involves a TCP handshake. Then the server sends a service banner to the client
+acknowledging it is ready to receive commands and also it identifies itself with server specs. Client responds with EHLO since
+server is capable of Extended SMTP (ESMTP). Several more back and forths and the MAIL, RCPT and DATA command are sent and ACk following
+with <CR><LF>.<CR><LF>.
+
+Local Server to Remote Server
+An email server locates another server by using a special DNS record type known as a mail exchange MX record. Mail servers
+don't care whether the message is coming from an email client or another SMTP server, the rules and procedures are the same.
+Retrieving email has different implementations based on need cases. 
+
+
+
+
+
+
+
+
