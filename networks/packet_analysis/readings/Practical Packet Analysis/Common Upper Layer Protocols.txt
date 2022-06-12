@@ -135,13 +135,19 @@ components including a Mail Delivery Agent (MDA) and Mail Submission Agent (MSA)
 
 Sending email from client to mail server involves a TCP handshake. Then the server sends a service banner to the client
 acknowledging it is ready to receive commands and also it identifies itself with server specs. Client responds with EHLO since
-server is capable of Extended SMTP (ESMTP). Several more back and forths and the MAIL, RCPT and DATA command are sent and ACk following
-with <CR><LF>.<CR><LF>.
+server is capable of Extended SMTP (ESMTP). Several more back and forths and the MAIL, RCPT and DATA command are sent and ACk following with <CR><LF>.<CR><LF> to signal the end of data.
 
 Local Server to Remote Server
 An email server locates another server by using a special DNS record type known as a mail exchange MX record. Mail servers
 don't care whether the message is coming from an email client or another SMTP server, the rules and procedures are the same.
-Retrieving email has different implementations based on need cases. 
+Retrieving email has different implementations based on need cases. Most prevalent ones are Post Office Protocol v3 (POP3) and
+Inernet Message Access Protocol (IMAP). Clients send STARTTLS commands to email server informing server client would like to
+retrieve messages using Transport Layer Security (TLS) protocol.
+
+Sending Attachments via SMTP
+Not intended for transmitting files it still has become a primary sharing mechanism for many. The client has to send plaintext
+along with binary data associated with the attchment. To make this happen it identifies its Content-Type as mulipart/mixed with
+a boundary each with their own unique MIME type and encoding and each will be seperated with the boundary value specified.
 
 
 
