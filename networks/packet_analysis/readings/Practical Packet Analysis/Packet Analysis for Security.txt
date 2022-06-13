@@ -11,3 +11,61 @@ Scan signals the port is open and running a service. Most likey 5 packets will b
 
 Passive Fingerprinting
 [passiveosfinger printing.pcapng]
+
+Analyzing packets that are being sent from target device and looking at default values could give a clue on the type of OS the target is running on.
+
+Protocol  Field     Default   Platform
+IP        TTL       64        NMap, BSD, OSX, Linux
+                    128       Novell, Windows
+                    255       Cisco IOS, Palm OS, Solaris
+
+IP        DNFrag    Set       BSD, OSX, Linux, Novell, Windows, Palm OS, Solaris
+                    NSet      Nmap, Cisco IOS
+                   
+TCP       MSS       0         Nmap
+                    1440-60   Windows,Novell
+                    1460      BSD, OSX, Linux, Solaris
+TCP       WSize     1024-4096 Nmap
+                    65535     BSD, oSX
+                    Variable  Linux
+                    16384     Novell
+                    4128      Cisco IOS
+                    24820     Solaris
+                    Variable  Window
+TCP       SackOK    Set       Linux,Windows,OSX, OpenBSD
+                    NSet      Nmap, FreeBSD, Novell, Cisco IOS, Solaris
+
+There are many variations and by no means is this list exhaustive or conclusive.
+
+Active FingerPrinting
+[activeosfingerprinting.pcapng]
+
+Instead of listening for packets the attacker crafts specific packets to get certain replies in hopes of revealing the OS. NMap
+creates packets to ellicit certain responses and checks details with a database to build a profile of the target.
+
+.Traffic Manipulation
+
+ARP Cache Poisoning
+A MITM attack , ARP packets are crafted to redirect traffic to an attacker who then relays traffic to the original destination.
+An attacker sends an ARP unicast packet directly to the target even though it should be broadcasted to all devices. The Routers IP address is listed rather than its own. Then attacker sends a packet with an ARP reply and communication now occurs between attacker and target. Since this attack is subtle you typically need an IDS to help flag these attacks or software that monitors changes in ARP tables.
+
+.Session Hijacking
+[sessinonhijacking.pcapng]
+
+Using ARP poisoning an attacker can learn information about session through cookie information stored in packets.
+
+.Remote-Access Trojan
+[ratinfected.pcapng]
+
+Using an IDS to follow an alert we follow the hexadecimal content that triggered the warning. We notice a conversation between two devices and follow the TCP stream and notice some add behavior and system information. This isn't normal. We see an odd phrase being sent over and over and search packets for this string leading us to  conversation where the attacked device is sending data to the attacker. Looking at the data content we notice a JFIF string which a google search says is the beginning of JPG files. It seems that the infected device is sending pictures to the attacker but of what? We save the file and try to view it however it cannot be read, the file we saved had some extra data from the malware and not specifically from the JPG file so after removing this data with a hexeditor we are able to view the jpg. They are screenshots of the desktop. 
+
+This scenario is an example of a framework an intrusion analyst could use when analyzing an IDS alert:
+-Examine the alert and signature it created
+-Confirm whether the signature is a match in the proper context
+-Examine traffic to understand what the attacker is trying to accomplish
+-Begin containment of the issue before any more sensitive information leaks from the compromised target.
+
+.Exploit Kit and Ransomware
+[cryptowall4_c2.pcapng, ek_to_cryptowall4.pcapng]
+
+
