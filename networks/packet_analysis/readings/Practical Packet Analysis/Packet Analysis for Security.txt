@@ -1,0 +1,13 @@
+.Reconnaissance
+Attackers first step is often to perform in-depth research on the target system. Footprinting then scanning IP address or DNS name for open ports or running services. Scanning signals which devices are alive and reachable and what ports are listening.
+
+SYN Scan
+[synscan.pcapng]
+
+Sends SYN packets on range of ports to see which might be listening and willing to communicate with outside devices. Nmap is a popular robust networking-scanning tool that can perform about any kind of scan one can imagine. Any SYN ACK response from a SYN
+Scan signals the port is open and running a service. Most likey 5 packets will be exchanged [SYN,SYN ACK] and 3 retransmits.
+
+.Operating System Fingerprinting
+
+Passive Fingerprinting
+[passiveosfinger printing.pcapng]
