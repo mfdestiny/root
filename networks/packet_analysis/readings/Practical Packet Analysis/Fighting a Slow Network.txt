@@ -1,0 +1,32 @@
+.TCP Error-Recovery Features
+
+TCP retransmissions
+[tcp_retransmissions.pcapng]
+
+The ability to retransmit packets is one of TCP's most fundamental error-recovery features to combat packet loss. The primary
+mechanism for retransmission of a packet is the retransmission timer. This timor maintains the value for the retransmission timeout (RTO). When a packet is transmitted via TCP the time starts. It stops when an ACK is recieved. The time between transmission and ack
+is the roundtrip time (RTT). Several of these times are averaged to determine the RTO value. Until this value is determined a predetermined value is used then adjusted based on the average is communication continues. The RTO value is used on every packet
+regardless of packet loss. When a packet is not received the packet is retransmitted with a doubled RTO value. THis occurs each time the packet is not received until an ACK is received or the sender reaches the maximum number of retransmission attempts. Details can be found in RFC6298. By default windows machines have a mximum attempt of 5 attempts while most linux defaults are 15. Only difference between the original packet and retransmitted packet is the IP identification and checksum fields. Data retransmission is beneficial to the transmitting device to detect and recover from packetloss.
+
+TCP duplicate acknowledgements
+[tcp_dupack.pcapng]
+
+Duplicate ACK is beneficial to the receiving device to detect and recover from packetloss. a dup ack is sent from a recipient when that recipient receives packets out of order. TCP after all is suppose to ensure data is recieved and assembled in the same order it is sent. When a handshake occurs one of the most important parts is the initial sequence number (ISN), once it is set for each side each additional packet is incrememnted by the size of its payload. The ACK is the sequence + bytes received. THe next packets sequence should be the previous ACK just calculated. When a receiver gets a packet out of order it resends an ACK with the expected sequence number in order to elicit a retransmission. When 3 duplicate ACKS are received it assumes the packet was indeed lost and immediately sends a fast retransmission triggering all other packets to be placed in queue until the fast packet is sent. An option to be negotiated during the TCP handshake is Selective ACK where only the missing packets need to be retransmitted instead of every packet after the fast transmission making the dataloss recovery that much more efficient.
+
+TCP Flow Control
+
+A sliding-window mechanism detects when packet loss may occur and adjusts the rate of transmission to prevent it. The mechanism leverages the recipients receive window to control the flow of data. The window is a value specified by the recipient and stored in the TCP header (in bytes) telling the transmitter how much data the recipient is willing to store in its TCP buffer space temporarily until it can be passed up the stack to the application-layer protocol waiting to process it.For the transmitter to send more data the recipient must send an acknowledgement that the precious data was recieved and clear the buffer space by processing  the data occupying the space.
+
+The client sends data until buffer space is full. Data is processed and an ACK is sent and the process is repeated over. This prevents the receiver from getting overwhelmed. When a server is getting overwhelmed it can adjust its window size within the ACK header. Data can be halted due to various reasons by setting the window size to zero. The client will keep the connection alive
+with 'keep-alive' packets at regular intervals so get updates on if the window size has been updated. The server will send an ACK when the window has changed. [tcp_zerowindow recovery.pcapng tcp_zerowindow dead.pcapng]
+
+As the window size buffer gets full less data can be transmitted a classic indicator of increased latency.
+  SYN
+1 SYN/ACK
+  ACK
+2 L7 PROTOCOL REQUEST
+1 ACK
+3 L7 PROTOCOL DATA
+
+time delay at 1,2,3 can help troubleshoot with 1 being wire latency 2 client latency and 3 server latency
+
