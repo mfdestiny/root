@@ -1,0 +1,11 @@
+Wireless networks operate on a spectrum, in the U.S. there are 11 available channels. A packet sniffer can only listen to one channel at a time however there are programs that rapidly switch channels to collect data such as Kismit. There is a slight overlap between channels so if you are listening on channel 1 you might catch packets on channel 2. Typically networks coexist in same area are designed to use nonoverlapping channels 1, 6 and 11.
+
+Wireless signal interface isn't something that can be done using Wireshark, you would need a spectrum analyzer. A cost-effective option is MetaGeek's wi-spy usb device that monitors the entire 802.11 spectrum fror signals.
+
+Wireless Card Modes
+-Managed Mode:  wireless client connects directly to wireless access point (WAP); the driver associated with NIC relies on WAP to manage communication process
+-Adhoc Mode: wireless network setup where devices connect directly to each other; two wireless clients communicating with each other share responsibilites that a WAP would handle
+-Master Mode: higher-end wireless NICs support this mode allowing the NIC to work with software to allow computer to be a WAP for other devices
+-Monitor Mode: wireless client stops transmitting and receiving data nd only listens to packets flying through air. known as RFMON mode
+
+.802.11 Packet Structure
