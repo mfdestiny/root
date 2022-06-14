@@ -1,0 +1,12 @@
+Cloudshark: storing, indexing and storing packet captures.
+WireEdit: graphical tool to craft specific values in a packet.
+Cain & Abel: one of the better windows tools for ARP cache poisoning
+Scapy: python library to create and manipulate packets based on command line scripts.
+TraceWrangler: sanitizes packets to share with vendors/colleagues by anonymizing different types of addresses presents.
+tcpReplay: allows set of packets to be retransmitted within a packet capture file to see how a device reacts to them
+NetworkMiner: network forensics; good at parsing packets. can breakdown into OS detection and sessions. more features in paid version.
+CapTipper: rich shell enviroment allowing user to interactively explore individual conversations to find redirections, file objects and malicious content.
+ngrep: grep for packets
+libpcap: portable c/c++ library for network traffic capture
+npcap: nmap packet sniffing library for windows
+hping: comand line packet-crafting editor and transmission tool. variety of protocols supported.
