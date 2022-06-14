@@ -9,3 +9,38 @@ Wireless Card Modes
 -Monitor Mode: wireless client stops transmitting and receiving data nd only listens to packets flying through air. known as RFMON mode
 
 .802.11 Packet Structure
+The main difference between wireless and wired is the header. The 802 header contains extra information and the medium over which it is transmitted.
+
+The three types of 802 packets are:
+-Management: establishes connectivity between hosts at layer 2. subtype sinclude authentication, association, beacon packets.
+-Control: allow for delivery mangement and congestion etc. subtypes include request-to-send and clear-to-send packets.
+-Data: contain actual data and only types of packets that can be forwarded from wireless to wired networks.
+
+[80211beacon.pcapng]
+Beacon packets are one of the most informative packets sent from as a broadcast packet from a WAP to notify listeners WAP is available and to set the guidelines needed for two-way communication.
+
+In the management frame header:
+Timestamp: Time packet is sent.
+Beacon Interval: Retransmission interval
+Capabilities Information: Hardware capabilities of WAP
+SSID parameter set: SSID broadcast by WAP
+Supported rates: data transfer rates supported by WAP
+DS Parameter set: channel WAP is broadcasting on
+
+Each WAP has unique identifying name called basic service set identifier (BSS ID).
+
+Filtring specific wireless packet types:
+[Table 13-1 pg.422]
+
+.Wireless Security
+Original security was Wired Equivalent Privacy (WEP) , several weaknesses found and it was retired for Wi-Fi Protected Access (WPA) and the more secure WPA2 standards, still fallible yet more secure than WEP.
+
+WPA authentication with TKIP encryption:
+Beacon frame
+Probe request
+Probe response
+2 authentication packets
+Assocation request
+Assocation response
+4 key messages aka WPA handshake. 2 challenges and 2 responses.
+Data
