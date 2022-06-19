@@ -52,8 +52,6 @@ int main(int argc, char **argv)
  * a new child for each call. Each process should call
  * doFib() exactly once.
  */
-static void doFib(int n, int doPrint)
-{
   static void doFib(int n, int doPrint)
 {
   int result = 0;
@@ -101,7 +99,5 @@ static void doFib(int n, int doPrint)
   	//printf("sending result to parent\n");
   	exit(result);
   }
-
-}
 
 }
