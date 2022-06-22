@@ -63,15 +63,16 @@ int main(int argc, char **argv) {
     	free(buffer);
     	exit(1);
     }
-    printf("you typed: %s",buffer);
+    if (strcmp(buffer,"exit\n") == 0) {
+    	printf("exiting\n");
+    	free(buffer); //release memory
+    	exit(0);
+    }
+    
     /* Evaluate */
     //tokenize arguments
     char** tokens = tokenize_command_line(buffer);
-    /*if (tokenize fails) {
-    	perror
-    	free
-    	exit
-    }*/
+    free(buffer);
     //parse tokens into command struct
     struct Command commands = parse_command(tokens);
     //pass command struct through eval
@@ -93,11 +94,21 @@ with your own implementation. */
  * have, then allocate a char** of sufficient size and fill it using strtok()
  */
 char **tokenize_command_line(char *cmdline) {
-  //find how many arguments from command line
-  //malloc char**
-  //fill it using strok
-  (void)cmdline;
-  return NULL;
+  
+  char** buffer = malloc(sizeof(char*) * MAX_WORDS_PER_CMDLINE); //allocate for worst case.
+  char* p = NULL;
+  int index = 0;
+  
+  p = strtok(cmdline, " \n"); //tokenize
+  
+  if (buffer != NULL) {
+	while (p != NULL) {
+		buffer[index++] = p;
+		p = strtok(NULL, " \n");	  
+	}
+  }
+  
+  return buffer;
 }
 
 /** Turn tokens into a command.
@@ -108,6 +119,16 @@ char **tokenize_command_line(char *cmdline) {
  * Command.
  */
 struct Command parse_command(char **tokens) {
+  int index = 0;
+  while (tokens[index] != NULL) { //
+  	if (tokens[index] == NULL) {
+  		printf("end of token list\n");
+  		break;
+  	}
+  	printf("tokens %s\n", tokens[index]);
+  	index++;
+  	
+  }
   struct Command dummy = {.args = tokens, .outputFile = NULL};
   return dummy;
 }
@@ -119,7 +140,7 @@ struct Command parse_command(char **tokens) {
  */
 void eval(struct Command *cmd) {
   (void)cmd;
-  printf("attempting to evaluate\n");
+  //printf("attempting to evaluate\n");
   return;
 }
 
@@ -130,11 +151,7 @@ void eval(struct Command *cmd) {
  */
 int try_exec_builtin(struct Command *cmd) {
   (void)cmd;
-  /*if (strcmp(buffer,"exit\n") == 0) {
-    	printf("exiting\n");
-    	free(buffer); //release memory
-    	exit(0);
-  }*/
+  
   return 0;
 }
 
