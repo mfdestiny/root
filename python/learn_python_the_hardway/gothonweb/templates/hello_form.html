@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Sample Web Form</title>
+  </head>
+  <body>
+    {% extends "layout.html" %}
+
+    {% block content %}
+    <h1>Fill Out This Form</h1>
+    <form class="" action="/hello" method="post">
+      A greeting: <input type="text" name="greet">
+      <br>
+      Your Name: <input type="text" name="name">
+      <br>
+      <input type="submit">
+    </form>
+
+    {% endblock %}
+  </body>
+</html>

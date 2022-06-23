@@ -2,9 +2,20 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title>{{Title}}</title>
+    <title>{{title}}</title>
   </head>
   <body>
-    <h1>{{username}}</h1>
+    {% extends "layout.html" %}
+
+    {% block content %}
+
+    {% if greeting %}
+      I just wanted to say
+      <em style="color:green; font-size: 2em;">{{ greeting }}</em>
+    {% else %}
+      <em>Hello</em> World!
+    {% endif %}
+
+    {% endblock %}
   </body>
 </html>
