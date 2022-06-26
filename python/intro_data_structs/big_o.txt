@@ -1,0 +1,48 @@
+Operation Name              Code                Cost
+
+index access              L[i]                  1
+index assignment          L[i] = newvalue       1
+append                    L.append(newitem)     1
+pop(end of list)          L.pop()               1
+pop(from index i)         L.pop(i)              n-i
+insert at index i         insert(i,newitem)     n-i
+deleted at index i        delete(item)          n-i
+membership testing        item in L             n
+slice                     L[a:b]                b-a
+concate two lists         L1 + L2               n1 + n2
+sort                      L.sort                nlogn
+
+these work for sequential collections i.e. list, str assuming operations exist
+which operations produce a new copy of collection?
+concat and slicing; running times proportional to length of new collections
+
+Operation Name                Code            Cost
+Get item                    D[key]            1
+Set item                    D[key] = value    1
+(key) membership testing    key in D          1
+Delete item by key          del D[key]        1
+
+Dictionary Operations average costs
+
+
+Operation Name               Code             Cost
+Add newitem               A.add(newitem)      1
+Del an item               A.delete(item)      1
+Union                     A | B               n1 + n2
+Intersection              A & B               min(n1,n2)
+Set Differences           A - B               n1
+Symmetric Difference      A ^ B               n1 + n2
+
+
+n is size of set A or B respectively
+
+Big O and Functions
+
+Constant O(1)
+Log O(log n)
+Linear O(n)
+n Log n O(nlogn)
+Quadratic O(n^2)
+Polynomial O(n^k)
+Exponential O(2^n)
+Factorial O(n!)
