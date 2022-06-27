@@ -12,7 +12,7 @@ class DoublyLinkedList:
     def __init__(self):
         self._head = None
         self._tail = None
-        self._length = None
+        self._length = 0
 
     def addfirst(self,item):
         if len(self) == 0: #list is empty
