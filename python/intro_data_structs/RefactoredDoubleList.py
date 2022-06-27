@@ -51,3 +51,16 @@ class RefactoredDoubleList:
 
     def removelast():
         self._remove(self._tail)
+
+    def __iadd__(self,other):
+        if other._head is not None:
+            if self._head is None:
+                self._head = other._head #first list is empty
+            else:
+                self._tail.link = other._head #link self tail to beginning of other
+                other._head.prev = self._tail #set other head to link to our list
+            self._tail = other._tail #reset self tail to end of other list
+            self._length = self._length + other._length
+
+        other.__init__() # clean up second list
+        return self
