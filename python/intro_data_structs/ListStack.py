@@ -16,3 +16,10 @@ class ListStack:
 
     def isempty(self): #O(n)
         return len(self) == 0
+
+class StackErrorHandling(ListStack):
+    def pop(self):
+        try:
+            return self._L.pop()
+        except IndexError:
+            raise RuntimeError("pop from empty stack")
