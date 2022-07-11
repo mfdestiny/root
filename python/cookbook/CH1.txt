@@ -1,0 +1,77 @@
+CH1:
+
+UNPACKING 
+*args allows unpacking of unspecified size during iteration;
+
+KEEPING LAST N ITEMS AS REFERENCE
+yield returns generator containing variable to calling function and proceeding; sibling to return, memory efficient
+queues provide better optimization than lists when adding to front of the collection
+
+FINDING LARGEST OR SMALLEST #
+heapq has better O when finding max,min(N) in list; most important feature is heap[0] always contains smallest item
+heappop pops first item(smallest) in logN time. great for finding several min or max i.e 3 largest etc;
+min,max still faster for N=1; if N ~= len(N), sorting and splicing may be faster, heap sometimes does these optimizations itself. WHAT IS A HEAP DATA STRUCTURE?
+
+PRIORITY QUEUE
+Priority queue can be implemented by adding objects to queue with a (-priority,self._index,item); python compares tuples by each item in list so if priority are the same than it compares indexes, which will never be the same and the first(lowest) index of same priority will be popped. Could be used in parallel with locking/signaling for threads as an real-world example.
+
+
+MAPPING KEYS TO MULT. VALUES IN DICT
+key:value - use list or set as value; list to keep preserve order,set to remove duplicates and order doesn't matter
+can use defaultdict to auto initialize value structure; warning: it will auto create entries for keys accessed later if they aren't in the dict, use .setdefault to avoid this behavior
+
+KEEPING DICTS IN ORDER
+ordereddict provides answer to preserving original insertion order; great for controlling order of fields in a JSON encoding etc.
+
+-double linked list internally; twice the size due to extra link
+
+CALCULATIONS ON DICTS
+invert key:value using zip, warning; creates iterator can only be accessed once
+more usefel than using min(dict.value()) etc b/c doesn't tell u anything about key if u wanted such info
+if multiple values are equal, key will be used to determine in case of min,max
+
+COMMONALITIES IN TWO DICTS
+a,b=dict a.keys&b.keys = set of common entries etc
+
+REMOVING DUPS IN SEQUENCE WHILE KEEPING ORDER
+set and generator i.e. yield
+
+NAMING SLICES (READABILITY)
+
+record = '....................100          .......513.25     ..........'
+cost = int(record[20:32]) * float(record[40:48])
+
+Instead of doing that, why not name the slices like this?
+    
+    SHARES = slice(20,32)
+    PRICE  = slice(40,48)
+    cost = int(record[SHARES]) * float(record[PRICE])
+
+MOST FREQUENTLY OCCURING ITEMS IN SEQUENCE
+
+collections.Counter is designed for such a problem.
+can combine subtract etc?
+
+SORTING LIST OF DICT W/ COMMON KEY
+operator module has itemgetter function built for such thing
+
+FILTERING SEQUENCE ELEMENTS
+easiest way is list comprehension
+
+#SUBSET OF ANOTHER DICITONARY
+dict comprehension
+much faster than creating tuples and adding to dict() and code is clearer
+
+MAPPING NAMES TO SEQUENCE ELEMENTS
+collections.namedtuple() w/ minimal overhead to normal tuple object.
+looks like class instance but acts like tuple and supports all tuple operations
+namedtuple can be replacement for a dictionary (dict takes more space,namedtuple is immutable however)
+can replace but creates entrely new namedtuple with specified values
+
+TRANSFORMING AND REDUCING DATA SIMULTANEOUSLY
+generator expressions
+
+COMBINING MULTI MAPPINGS TO SINGLE MAP
+collections ChainMap maybe of use
+
+
