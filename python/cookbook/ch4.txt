@@ -1,0 +1,34 @@
+4.2 Delegating Iteration
+-custom object containg a list,tuple etc and needs to be iterable
+__iter__() method in class
+
+4.3 custom iterator via generators
+presence of yield turns it into a generator which only runs in response to iteration
+
+4.5 Iterating in reverse
+reversed() can be customized on user-defined classes if __reversed__() method is implemented
+
+4.7 slicing iterator
+itertools.islice for taking slices of iterators and generators; normally can't be sliced since
+no information is known about their length since they don't implement indexing. this consumes data to the point of splice so if you need to go back turn data into list first;
+
+4.8 skipping first part of iterable
+itertools.dropewhile() will discard while the conditional state is true then produce the sequence
+
+4.9 iterating over all possible combinations or permutations
+itertools.permutations and itertools.combinations
+
+4.11 iterate over multi sequences simultaneously
+zip() function, zip_longest()
+
+4.12
+chain prefered to a+b  since entirely new sequence is created and requires a + b be same type. more efficient with memory
+
+4.14 flatten nested sequence
+recursive generators with yield
+
+4.15 iterating storted order over merged sorted iterables
+heapq.merge however it requires the two sequences to already be sorted to work
+
+4.16 replacing infinite while loops with iter
+iter has second arg used to terminate loop; need lambda to create callable that takes no arguments yet still supplies desired size argument
